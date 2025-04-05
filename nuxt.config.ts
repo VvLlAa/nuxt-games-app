@@ -10,9 +10,7 @@ export default defineNuxtConfig({
       API_KEY_GAME: process.env.API_KEY_GAME,
     },
   },
-  css: [
-      './assets/styles/global.scss'
-  ],
+  css: ['./assets/styles/global.scss'],
 
   compatibilityDate: '2025-04-04',
-})
+});

@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import type { GameType } from "~/type/types";
+import type { GameType } from '~/type/types';
 
 const props = defineProps<{
-  game: GameType
+  game: GameType;
 }>();
 
 const imageUrl = computed(() => props.game.background_image || '/placeholder-game.jpg');
 
 const releaseDate = computed(() =>
-    new Date(props.game.released).toLocaleDateString('ru-RU', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
-    })
+  new Date(props.game.released).toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  })
 );
 
-const formattedGenres = computed(() =>
-    props.game.genres.map(g => g.name).join(', ')
-);
+const formattedGenres = computed(() => props.game.genres.map(g => g.name).join(', '));
 
 const isHovered = ref(false);
 const activeImage = ref<string | null>(null);
@@ -32,39 +30,32 @@ const handleThumbnailHover = (screenshot: { image: string }) => {
 };
 
 const onMouseLeave = () => {
-  isHovered.value = false
+  isHovered.value = false;
   activeImage.value = null;
 };
-
 </script>
 
 <template>
-  <div
-      @mouseenter="handleMouseEnter"
-      @mouseleave="onMouseLeave"
-      class="game-card"
-  >
+  <div @mouseenter="handleMouseEnter" @mouseleave="onMouseLeave" class="game-card">
     <div class="game-card__image">
       <NuxtImg
-          :src="activeImage || imageUrl"
+        :src="activeImage || imageUrl"
+        :alt="game.name"
+        loading="lazy"
+        width="300"
+        height="200"
+      />
+      <div v-if="isHovered" class="screenshots">
+        <NuxtImg
+          @mouseenter="handleThumbnailHover(screenshot)"
+          v-for="screenshot in game.short_screenshots"
+          :key="screenshot.image"
+          :src="screenshot.image"
           :alt="game.name"
           loading="lazy"
-          width="300" height="200"
-      />
-        <div
-            v-if="isHovered"
-            class="screenshots"
-        >
-          <NuxtImg
-              @mouseenter="handleThumbnailHover(screenshot)"
-              v-for="screenshot in game.short_screenshots"
-              :key="screenshot.image"
-              :src="screenshot.image"
-              :alt="game.name"
-              loading="lazy"
-              class="screenshot"
-          />
-        </div>
+          class="screenshot"
+        />
+      </div>
 
       <div class="game-card__rating">
         {{ game.rating }}
@@ -76,9 +67,9 @@ const onMouseLeave = () => {
 
       <div class="game-card__platforms">
         <div
-            v-for="platform in game.parent_platforms"
-            :key="platform.platform.id"
-            class="game-card__platform"
+          v-for="platform in game.parent_platforms"
+          :key="platform.platform.id"
+          class="game-card__platform"
         >
           {{ platform.platform.name }}
         </div>
@@ -99,7 +90,9 @@ const onMouseLeave = () => {
   max-width: 300px;
   height: 100%;
   border-radius: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   cursor: pointer;
   position: relative;
 
@@ -115,7 +108,7 @@ const onMouseLeave = () => {
   .screenshot {
     position: relative;
     width: 40px;
-    height: 40px ;
+    height: 40px;
     z-index: 100;
   }
 
@@ -163,7 +156,9 @@ const onMouseLeave = () => {
     border-radius: 8px;
     padding: 4px;
     font-size: 12px;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
 
     &:hover {
       background-color: #bb3030;
