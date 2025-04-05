@@ -20,7 +20,6 @@ export interface ApiResponse<T> {
     seo_description?: string;
     seo_h1?: string;
     seo_keywords?: string;
-    filters?: Record<string, any>;
     nofollow?: boolean;
     nofollow_collections?: string[];
     noindex?: boolean;

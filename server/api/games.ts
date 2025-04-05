@@ -1,6 +1,6 @@
 import {ApiResponse, GameType} from "~/type/types";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
     const config = useRuntimeConfig();
     try {
         const data = await $fetch<ApiResponse<GameType>>('https://api.rawg.io/api/games', {
@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
         });
         return data.results;
     } catch (error) {
+        console.error(error);
         throw createError({
             statusCode: 500,
             statusMessage: 'Failed to fetch games',
