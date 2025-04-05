@@ -2,6 +2,9 @@
 import { ref, computed } from 'vue';
 import { useGamesStore } from '~/stores/GamesStore.js';
 
+const router = useRouter();
+const route = useRoute();
+
 const GameStore = useGamesStore();
 
 const pageSize = 5;
@@ -22,6 +25,7 @@ const pageNumbers = computed(() => {
 const goToPage = page => {
   if (page >= 1 && page <= totalPages.value) {
     GameStore.currentPage = page;
+    localStorage.setItem('currentPage', GameStore.currentPage);
   }
 };
 </script>

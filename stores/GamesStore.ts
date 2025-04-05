@@ -12,11 +12,10 @@ export const useGamesStore = defineStore('games', () => {
     loading.value = true;
     error.value = null;
     try {
-      topGames.value = await $fetch<GameType[]>('/api/games', {
-        query: {
-          page: currentPage.value,
-        },
-      });
+      const page = getValidatedPage();
+      await updatePage(page);
+
+      topGames.value = await fetchGamesData(page);
 
       return topGames.value;
     } catch (err) {
@@ -25,6 +24,25 @@ export const useGamesStore = defineStore('games', () => {
     } finally {
       loading.value = false;
     }
+  };
+
+  const getValidatedPage = (): number => {
+    const localPage = localStorage.getItem('currentPage');
+    return localPage ? Number(localPage) : 1;
+  };
+
+  const updatePage = async (page: number): Promise<void> => {
+    const router = useRouter();
+    await router.push({ query: { page: String(page) } });
+    currentPage.value = page;
+  };
+
+  const fetchGamesData = async (page: number): Promise<GameType[]> => {
+    return await $fetch<GameType[]>('/api/games', {
+      query: {
+        page: page,
+      },
+    });
   };
 
   return {
