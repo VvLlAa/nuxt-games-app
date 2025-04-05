@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #eee;
+  color: #eeeeee;
 }
 
 .container {
@@ -11,4 +11,9 @@
 
 body {
   background: #181818;
+}
+
+:root {
+  --background: #252525;
+  --background-red: #bb3030;
 }

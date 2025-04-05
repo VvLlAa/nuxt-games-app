@@ -138,7 +138,7 @@ const onMouseLeave = () => {
     flex-direction: column;
     padding: 0.5rem 0.5rem 1rem 0.5rem;
     position: relative;
-    background-color: #252525;
+    background-color: var(--background);
     border-radius: 0 0 10px 10px;
   }
 
@@ -161,15 +161,14 @@ const onMouseLeave = () => {
       color 0.3s;
 
     &:hover {
-      background-color: #bb3030;
-      color: white;
+      background-color: var(--background-red);
     }
   }
 
   &__rating {
     position: absolute;
     margin-top: 10px;
-    background-color: #bb3030;
+    background-color: var(--background-red);
     top: 0;
     padding: 4px;
     border-bottom-right-radius: 8px;
@@ -180,7 +179,7 @@ const onMouseLeave = () => {
     transition: all 0.2s ease;
     z-index: 10;
     width: 100%;
-    background-color: #252525;
+    background-color: var(--background);
     overflow: hidden;
   }
 
@@ -195,10 +194,9 @@ const onMouseLeave = () => {
       background-color: #1d1d1d;
       border-radius: 20px;
       font-size: 12px;
-      color: #fff;
     }
     span:hover {
-      background-color: #bb3030;
+      background-color: var(--background-red);
     }
   }
 }
