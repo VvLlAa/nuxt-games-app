@@ -38,13 +38,7 @@ const onMouseLeave = () => {
 <template>
   <div @mouseenter="handleMouseEnter" @mouseleave="onMouseLeave" class="game-card">
     <div class="game-card__image">
-      <NuxtImg
-        :src="activeImage || imageUrl"
-        :alt="game.name"
-        loading="lazy"
-        width="300"
-        height="200"
-      />
+      <NuxtImg :src="activeImage || imageUrl" :alt="game.name" loading="lazy" />
       <div v-if="isHovered" class="screenshots">
         <NuxtImg
           @mouseenter="handleThumbnailHover(screenshot)"

@@ -6,12 +6,18 @@ export const useGamesStore = defineStore('games', () => {
   const topGames = ref<GameType[]>([]);
   const loading = ref<boolean>(false);
   const error = ref<string | null>(null);
+  const currentPage = ref<number>(1);
 
   const getTopGames = async () => {
     loading.value = true;
     error.value = null;
     try {
-      topGames.value = await $fetch<GameType[]>('/api/games');
+      topGames.value = await $fetch<GameType[]>('/api/games', {
+        query: {
+          page: currentPage.value,
+        },
+      });
+
       return topGames.value;
     } catch (err) {
       error.value = 'failed to load games.';
@@ -26,5 +32,6 @@ export const useGamesStore = defineStore('games', () => {
     loading,
     error,
     getTopGames,
+    currentPage,
   };
 });

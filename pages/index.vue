@@ -3,24 +3,42 @@ import { useGamesStore } from '@/stores/GamesStore';
 
 const GamesStore = useGamesStore();
 
-const { data: topGames } = await useAsyncData('top-games', () => GamesStore.getTopGames(), {
-  server: true,
-});
+const { data: topGames, refresh } = await useAsyncData(
+  'top-games',
+  () => GamesStore.getTopGames(),
+  {
+    server: true,
+  }
+);
 
-console.log(topGames.value);
+watch(
+  () => GamesStore.currentPage,
+  () => {
+    refresh();
+  }
+);
 </script>
 
 <template>
   <div class="main-page">
-    <GameCard v-for="game in topGames" :key="game.id" :game="game" />
+    <div class="main-page__games">
+      <GameCard v-for="game in topGames" :key="game.id" :game="game" />
+    </div>
+    <Pagination />
   </div>
 </template>
 
 <style lang="scss">
 .main-page {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
+  flex-direction: column;
+  align-items: center;
+
+  &__games {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
 }
 </style>
