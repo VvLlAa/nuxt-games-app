@@ -1,19 +1,11 @@
 <script setup lang="ts">
 import { useGamesStore } from '@/stores/GamesStore';
 import FiltersMain from '~/components/UI/FiltersMain.vue';
+import { useGames } from '~/composables/useGames';
 
 const GamesStore = useGamesStore();
 
-const { data: gameList, refresh } = await useAsyncData(
-  'top-games',
-  async () => {
-    return await GamesStore.getTopGames();
-  },
-  {
-    server: true,
-  }
-);
-
+const { gameList, refresh } = useGames();
 watch(
   () => GamesStore.currentPage,
   () => {

@@ -1,19 +1,11 @@
 <script setup lang="ts">
 import { useGamesStore } from '~/stores/GamesStore';
+import { useGames } from '~/composables/useGames';
 
 const GamesStore = useGamesStore();
+const { refresh } = useGames();
 
 const visibleTop = ref<boolean>(false);
-
-const { refresh } = await useAsyncData(
-  'top-games',
-  async () => {
-    return await GamesStore.getTopGames();
-  },
-  {
-    server: true,
-  }
-);
 
 const sendFilter = async () => {
   localStorage.setItem('currentPage', '1');
