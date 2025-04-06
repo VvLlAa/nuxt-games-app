@@ -8,6 +8,7 @@ export const useGamesStore = defineStore('games', () => {
   const error = ref<string | null>(null);
   const currentPage = ref<number>(1);
   const currentGame = ref<GameType | null>(null);
+  const ratingGame = ref<string[]>(['1', '5']);
 
   const router = useRouter();
 
@@ -16,10 +17,9 @@ export const useGamesStore = defineStore('games', () => {
     error.value = null;
     try {
       const page = getValidatedPage();
+      const rating = getValidatedRating();
       await updatePage(page);
-
-      gameList.value = await fetchGamesData(page);
-
+      gameList.value = await fetchGamesData(page, rating);
       return gameList.value;
     } catch (err) {
       error.value = 'failed to load games.';
@@ -39,12 +39,19 @@ export const useGamesStore = defineStore('games', () => {
     currentPage.value = page;
   };
 
-  const fetchGamesData = async (page: number): Promise<GameType[]> => {
+  const fetchGamesData = async (page: number, rating: string[]): Promise<GameType[]> => {
     return await $fetch<GameType[]>('/api/games', {
       query: {
         page: page,
+        rating: `${String(rating[0])},${String(rating[1])}`,
       },
     });
+  };
+
+  const getValidatedRating = (): string[] => {
+    const min = Number(ratingGame.value[0]) * 20;
+    const max = Number(ratingGame.value[1]) * 20;
+    return [String(min), String(max)];
   };
 
   // --------------------------------------------------------
@@ -63,5 +70,6 @@ export const useGamesStore = defineStore('games', () => {
     currentPage,
     cardOpening,
     currentGame,
+    ratingGame,
   };
 });

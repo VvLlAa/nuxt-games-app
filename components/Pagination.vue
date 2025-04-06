@@ -2,9 +2,6 @@
 import { ref, computed } from 'vue';
 import { useGamesStore } from '~/stores/GamesStore.js';
 
-const router = useRouter();
-const route = useRoute();
-
 const GameStore = useGamesStore();
 
 const pageSize = 5;

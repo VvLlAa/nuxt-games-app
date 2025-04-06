@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useGamesStore } from '@/stores/GamesStore';
+import FiltersMain from '~/components/UI/FiltersMain.vue';
 
 const GamesStore = useGamesStore();
 
@@ -23,6 +24,9 @@ watch(
 
 <template>
   <div class="main-page">
+    <div>
+      <FiltersMain />
+    </div>
     <div class="main-page__games">
       <GameCard v-for="game in gameList" :key="game.id" :game="game" />
     </div>
@@ -35,6 +39,7 @@ watch(
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 2rem;
 
   &__games {
     display: flex;

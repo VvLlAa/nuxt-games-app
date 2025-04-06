@@ -6,6 +6,13 @@
   font-size: 16px;
 }
 
+:root {
+  --background: #252525;
+  --background-red: #bb3030;
+
+  --background-red-hover: #a92b2b;
+}
+
 h1 {
   font-size: 32px;
 }
@@ -24,9 +31,4 @@ h3 {
 
 body {
   background: #181818;
-}
-
-:root {
-  --background: #252525;
-  --background-red: #bb3030;
 }
