@@ -13,6 +13,7 @@ export default defineEventHandler(async event => {
         page: page,
       },
     });
+
     return data.results;
   } catch (error) {
     console.error(error);

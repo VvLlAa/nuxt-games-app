@@ -5,10 +5,10 @@ export interface GameType {
   rating: number;
   released: string;
   genres: { name: string }[];
-  short_screenshots: { image: string }[];
-  parent_platforms: {
-    platform: { name: string; id: number };
-  }[];
+  short_screenshots: ShortScreenshotsType[];
+  parent_platforms: PlatformsType;
+  slug: string;
+  tags: { name: string }[];
 }
 
 export interface ApiResponse<T> {
@@ -25,3 +25,16 @@ export interface ApiResponse<T> {
   noindex?: boolean;
   description?: string;
 }
+
+export interface ShortScreenshotsType {
+  id: number;
+  image: string;
+}
+
+export type PlatformsType = {
+  platform: {
+    id: number;
+    name: string;
+    slug: string;
+  };
+}[];

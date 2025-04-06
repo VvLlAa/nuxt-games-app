@@ -1,55 +1,23 @@
 <script setup lang="ts">
 import type { GameType } from '~/type/types';
+import { useGamesStore } from '~/stores/GamesStore';
+import Carousel from '~/components/UI/Carousel.vue';
+import Platfoms from '~/components/UX/Platfoms.vue';
+import { dateConversion } from '@/utits/dateConversion';
+
+const GameStore = useGamesStore();
 
 const props = defineProps<{
   game: GameType;
 }>();
 
-const imageUrl = computed(() => props.game.background_image || '/placeholder-game.jpg');
-
-const releaseDate = computed(() =>
-  new Date(props.game.released).toLocaleDateString('ru-RU', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  })
-);
-
 const formattedGenres = computed(() => props.game.genres.map(g => g.name).join(', '));
-
-const isHovered = ref(false);
-const activeImage = ref<string | null>(null);
-
-const handleMouseEnter = () => {
-  isHovered.value = true;
-  activeImage.value = null;
-};
-
-const handleThumbnailHover = (screenshot: { image: string }) => {
-  activeImage.value = screenshot.image;
-};
-
-const onMouseLeave = () => {
-  isHovered.value = false;
-  activeImage.value = null;
-};
 </script>
 
 <template>
-  <div @mouseenter="handleMouseEnter" @mouseleave="onMouseLeave" class="game-card">
+  <div @click="GameStore.cardOpening(props.game)" class="game-card">
     <div class="game-card__image">
-      <NuxtImg :src="activeImage || imageUrl" :alt="game.name" loading="lazy" />
-      <div v-if="isHovered" class="screenshots">
-        <NuxtImg
-          @mouseenter="handleThumbnailHover(screenshot)"
-          v-for="screenshot in game.short_screenshots"
-          :key="screenshot.image"
-          :src="screenshot.image"
-          :alt="game.name"
-          loading="lazy"
-          class="screenshot"
-        />
-      </div>
+      <Carousel :images="game.short_screenshots" />
 
       <div class="game-card__rating">
         {{ game.rating }}
@@ -57,19 +25,12 @@ const onMouseLeave = () => {
     </div>
 
     <div class="game-card__info">
-      <h2>{{ game.name }}</h2>
+      <h3>{{ game.name }}</h3>
 
       <div class="game-card__platforms">
-        <div
-          v-for="platform in game.parent_platforms"
-          :key="platform.platform.id"
-          class="game-card__platform"
-        >
-          {{ platform.platform.name }}
-        </div>
-
+        <Platfoms :platforms="game.parent_platforms" />
         <div class="game-card__additional-content">
-          <div>Дата выхода: {{ releaseDate }}</div>
+          <div>Дата выхода: {{ dateConversion(game.released) }}</div>
           <div class="game-card__genres">
             Жанр: <span>{{ formattedGenres }}</span>
           </div>
@@ -90,22 +51,6 @@ const onMouseLeave = () => {
   cursor: pointer;
   position: relative;
 
-  .screenshots {
-    display: flex;
-    position: absolute;
-    flex-direction: row;
-    justify-content: space-around;
-    bottom: 2px;
-    width: 100%;
-  }
-
-  .screenshot {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    z-index: 100;
-  }
-
   &:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 30px rgba(89, 3, 3, 0.4);
@@ -118,13 +63,6 @@ const onMouseLeave = () => {
     width: 100%;
     height: 200px;
     overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
   }
 
   &__info {

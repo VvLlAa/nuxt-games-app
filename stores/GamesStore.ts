@@ -3,10 +3,13 @@ import { ref } from 'vue';
 import type { GameType } from '~/type/types';
 
 export const useGamesStore = defineStore('games', () => {
-  const topGames = ref<GameType[]>([]);
+  const gameList = ref<GameType[]>([]);
   const loading = ref<boolean>(false);
   const error = ref<string | null>(null);
   const currentPage = ref<number>(1);
+  const currentGame = ref<GameType | null>(null);
+
+  const router = useRouter();
 
   const getTopGames = async () => {
     loading.value = true;
@@ -15,9 +18,9 @@ export const useGamesStore = defineStore('games', () => {
       const page = getValidatedPage();
       await updatePage(page);
 
-      topGames.value = await fetchGamesData(page);
+      gameList.value = await fetchGamesData(page);
 
-      return topGames.value;
+      return gameList.value;
     } catch (err) {
       error.value = 'failed to load games.';
       console.error(err);
@@ -32,7 +35,6 @@ export const useGamesStore = defineStore('games', () => {
   };
 
   const updatePage = async (page: number): Promise<void> => {
-    const router = useRouter();
     await router.push({ query: { page: String(page) } });
     currentPage.value = page;
   };
@@ -45,11 +47,21 @@ export const useGamesStore = defineStore('games', () => {
     });
   };
 
+  // --------------------------------------------------------
+
+  const cardOpening = async (cardGame: GameType) => {
+    currentGame.value = cardGame;
+    await router.push(`/game/${cardGame.slug}`);
+    localStorage.setItem('cardGame', JSON.stringify(currentGame.value));
+  };
+
   return {
-    topGames,
+    gameList,
     loading,
     error,
     getTopGames,
     currentPage,
+    cardOpening,
+    currentGame,
   };
 });

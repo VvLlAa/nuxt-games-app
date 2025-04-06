@@ -3,9 +3,11 @@ import { useGamesStore } from '@/stores/GamesStore';
 
 const GamesStore = useGamesStore();
 
-const { data: topGames, refresh } = await useAsyncData(
+const { data: gameList, refresh } = await useAsyncData(
   'top-games',
-  () => GamesStore.getTopGames(),
+  async () => {
+    return await GamesStore.getTopGames();
+  },
   {
     server: true,
   }
@@ -22,7 +24,7 @@ watch(
 <template>
   <div class="main-page">
     <div class="main-page__games">
-      <GameCard v-for="game in topGames" :key="game.id" :game="game" />
+      <GameCard v-for="game in gameList" :key="game.id" :game="game" />
     </div>
     <Pagination />
   </div>

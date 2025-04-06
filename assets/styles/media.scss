@@ -1,0 +1,30 @@
+@media screen and (max-width: 1100px) {
+  .card-game {
+    flex-direction: column;
+  }
+
+  .container {
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .card-game {
+    padding: 20px;
+  }
+  .container {
+    width: 100%;
+    padding: 0;
+  }
+
+  .p-galleria-content {
+    width: calc(100vw - 20px);
+  }
+
+  .card-game .galleria .galleria-thumbnail {
+    width: 90%;
+    height: 50px;
+  }
+}
