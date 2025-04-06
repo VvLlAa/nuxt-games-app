@@ -10,7 +10,15 @@ import GalleriaPrimeVue from '~/components/UI/GalleriaPrimeVue.vue';
 const GamesStore = useGamesStore();
 const game = ref<GameType>(GamesStore.currentGame as GameType);
 
-console.log(game.value);
+onMounted(() => {
+  nextTick(() => {
+    const local: string | null = localStorage.getItem('cardGame');
+    const cardGame: GameType = local ? JSON.parse(local) : [];
+    if (cardGame) {
+      game.value = cardGame;
+    }
+  });
+});
 </script>
 
 <template>

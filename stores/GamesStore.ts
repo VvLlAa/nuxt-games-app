@@ -51,8 +51,8 @@ export const useGamesStore = defineStore('games', () => {
 
   const cardOpening = async (cardGame: GameType) => {
     currentGame.value = cardGame;
-    await router.push(`/game/${cardGame.slug}`);
     localStorage.setItem('cardGame', JSON.stringify(currentGame.value));
+    await router.push(`/game/${cardGame.slug}`);
   };
 
   return {
