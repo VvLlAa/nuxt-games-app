@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { GameType } from '~/type/types';
 import { useGamesStore } from '~/stores/GamesStore';
-import Carousel from '~/components/UI/Carousel.vue';
 import Platfoms from '~/components/UX/Platfoms.vue';
 import { dateConversion } from '@/utits/dateConversion';
 
@@ -17,7 +16,7 @@ const formattedGenres = computed(() => props.game.genres.map(g => g.name).join('
 <template>
   <div @click="GameStore.cardOpening(props.game)" class="game-card">
     <div class="game-card__image">
-      <Carousel :images="game.short_screenshots" />
+      <NuxtImg :src="game.background_image" alt="Картинка игры" class="game-card__main-image" />
 
       <div class="game-card__rating">
         {{ game.rating }}
@@ -55,6 +54,12 @@ const formattedGenres = computed(() => props.game.genres.map(g => g.name).join('
     transform: scale(1.1);
     box-shadow: 0 4px 30px rgba(89, 3, 3, 0.4);
     z-index: 10;
+  }
+
+  &__main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   &__image {
