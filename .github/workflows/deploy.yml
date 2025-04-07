@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger Vercel Deploy Hook
+      - name: Hook
         run: |
           curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_bXVapp23UQAWim3KWGsVsssq4jlB/5B6deZYAaX
